@@ -34,6 +34,7 @@ class Game{
         new GameStage();
         new UILayer();
         new Background();
+        new Score(0,0,0,0, Util.color(255,255,255));
 
     }
 
