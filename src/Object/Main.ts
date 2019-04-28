@@ -13,10 +13,8 @@ class Main extends eui.UILayer {
     }
  
     private addToStage() {
-        SaveData.getAccountName();
-        SaveData.load();
-        CheckDate.getDate();
-        CheckDate.save();
+        CheckDate.init();
+        SaveData.init();
         GameObject.init( this.stage );
         Util.init(this);
         Game.init();

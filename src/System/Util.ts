@@ -121,7 +121,7 @@ class Util{
     static loadJSONLocalStrage(key : string):any{
         let jObject :string =  window.localStorage.getItem(key); // string
         if( jObject == null ){
-            SaveData.registrate();
+            SaveData.setObject();
             jObject = JSON.stringify(SaveData.object);
             window.localStorage.setItem(key, jObject);
         }

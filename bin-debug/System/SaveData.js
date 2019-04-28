@@ -1,55 +1,94 @@
+//GameNameを変更すると、ゲームごとにアカウント作成。
 var __reflect = (this && this.__reflect) || function (p, c, t) {
     p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
 var SaveData = (function () {
     function SaveData() {
     }
-    SaveData.getAccountName = function () {
-        //固有アカウント名 = ゲーム名 + 登録日
-        SaveData.account = Util.loadStringLocalStrage("account");
-        if (SaveData.account == null) {
-            console.log("アカウントがありません");
-            SaveData.registrate();
-        }
-    };
     SaveData.setObject = function () {
         SaveData.object = {
             "gameName": SaveData.gameName,
-            "account": SaveData.account,
+            "playerID": SaveData.playerID,
+            "gameID": SaveData.gameID,
             "registrationDate": CheckDate.registrationDate,
             "lastDate": CheckDate.lastDate,
             "bestScore": Score.bestScore
         };
     };
-    SaveData.registrate = function () {
-        console.log("新規登録");
-        CheckDate.getDate();
-        SaveData.setObject();
-        SaveData.account = SaveData.gameName + CheckDate.registrationDate;
-        SaveData.object.account = SaveData.account;
-        Util.saveStringLocalStrage("account", SaveData.account);
-        SaveData.save();
-    };
     SaveData.save = function () {
-        Util.saveJSONLocalStrage(SaveData.account, SaveData.object);
+        SaveData.object.gameName = SaveData.gameName;
+        SaveData.object.playerID = SaveData.playerID;
+        SaveData.object.gameID = SaveData.gameID;
+        SaveData.object.registrationDate = CheckDate.registrationDate;
+        SaveData.object.lastDate = CheckDate.lastDate;
+        SaveData.object.bestScore = Score.bestScore;
+        Util.saveJSONLocalStrage(SaveData.gameID, SaveData.object);
         SaveData.test();
     };
     SaveData.load = function () {
-        SaveData.object = Util.loadJSONLocalStrage(SaveData.account);
+        SaveData.object = Util.loadJSONLocalStrage(SaveData.gameID);
         SaveData.test();
     };
     SaveData.deleteData = function () {
+        console.log("データを消去します");
         SaveData.object = null;
         CheckDate.registrationDate = null;
-        Util.clearLocalStrage(SaveData.account);
-        SaveData.registrate();
+        Util.clearLocalStrage(SaveData.gameID);
+    };
+    //テストコード
+    SaveData.testUser = function () {
+        SaveData.deletePlayerID();
+        SaveData.deleteGameID();
+        SaveData.deleteData();
+        SaveData.getPlayerID();
+        SaveData.getGameID();
         SaveData.load();
+        SaveData.save();
+    };
+    SaveData.init = function () {
+        SaveData.getPlayerID();
+        SaveData.getGameID();
+        SaveData.load();
+        SaveData.save();
+    };
+    SaveData.getPlayerID = function () {
+        SaveData.playerID = Util.loadStringLocalStrage("playerID");
+        if (SaveData.playerID == null) {
+            console.log("playerIDがありません");
+            SaveData.setPlayerID();
+        }
+    };
+    SaveData.setPlayerID = function () {
+        console.log("playerIDを新規作成");
+        CheckDate.deleteDate();
+        CheckDate.getDate();
+        SaveData.playerID = CheckDate.registrationDate.toString();
+        Util.saveStringLocalStrage("playerID", SaveData.playerID);
+        console.log("playerIDを作成しました");
+    };
+    SaveData.deletePlayerID = function () {
+        console.log("playerIDを削除します");
+        Util.clearLocalStrage("playerID");
+    };
+    SaveData.getGameID = function () {
+        SaveData.gameID = SaveData.gameName + SaveData.playerID.toString(); //Util.loadStringLocalStrage(SaveData.objectKey);
+    };
+    SaveData.setGameID = function () {
+        console.log("gameIDを作成します");
+        SaveData.gameID = SaveData.gameName + SaveData.playerID.toString();
+    };
+    SaveData.deleteGameID = function () {
+        console.log("gameIDを消去します");
+        SaveData.gameID = null;
+        Util.clearLocalStrage(SaveData.gameID);
     };
     SaveData.test = function () {
         console.log(SaveData.object);
     };
+    SaveData.object = null;
     SaveData.gameName = "TemplateProject2";
-    SaveData.account = null;
+    SaveData.playerID = null;
+    SaveData.gameID = null;
     return SaveData;
 }());
 __reflect(SaveData.prototype, "SaveData");

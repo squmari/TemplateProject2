@@ -4,6 +4,12 @@ class CheckDate {
     static registrationDate : number = null;//ms
     static lastDate :number = null;//ms
 
+    static init(){
+        CheckDate.getDate();
+        //CheckDate.save();
+
+    }
+
     static getDate(){
 
         //登録日の取得
@@ -29,6 +35,12 @@ class CheckDate {
         SaveData.object.registrationDate = CheckDate.registrationDate;
         SaveData.object.lastDate = CheckDate.lastDate;
         SaveData.save();
+    }
+
+    static deleteDate(){
+        CheckDate.registrationDate = null;
+        CheckDate.lastDate = null;
+        Util.clearLocalStrage("registrationDate");
     }
 
 }

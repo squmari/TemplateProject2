@@ -23,10 +23,8 @@ var Main = (function (_super) {
         return _this;
     }
     Main.prototype.addToStage = function () {
-        SaveData.getAccountName();
-        SaveData.load();
-        CheckDate.getDate();
-        CheckDate.save();
+        CheckDate.init();
+        SaveData.init();
         GameObject.init(this.stage);
         Util.init(this);
         Game.init();

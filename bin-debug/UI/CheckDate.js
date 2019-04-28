@@ -4,6 +4,10 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 var CheckDate = (function () {
     function CheckDate() {
     }
+    CheckDate.init = function () {
+        CheckDate.getDate();
+        //CheckDate.save();
+    };
     CheckDate.getDate = function () {
         //登録日の取得
         (function getRegistrationDate() {
@@ -24,6 +28,11 @@ var CheckDate = (function () {
         SaveData.object.registrationDate = CheckDate.registrationDate;
         SaveData.object.lastDate = CheckDate.lastDate;
         SaveData.save();
+    };
+    CheckDate.deleteDate = function () {
+        CheckDate.registrationDate = null;
+        CheckDate.lastDate = null;
+        Util.clearLocalStrage("registrationDate");
     };
     CheckDate.I = null;
     CheckDate.registrationDate = null; //ms
