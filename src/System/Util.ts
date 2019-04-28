@@ -49,14 +49,6 @@ class Util{
         return code;
     }
 
-/*    static colorLerp( c0:number, c1:number, rate01:number):number {
-        let rate10 = 1 - rate01;
-        let color = 
-            ( ((c0&0xff0000) * rate10 + (c1&0xff0000) * rate01) & 0xff0000 ) +
-            ( ((c0&0xff00) * rate10 + (c1&0xff00) * rate01) & 0xff00 ) +
-            ( ((c0&0xff) * rate10 + (c1&0xff) * rate01) & 0xff );
-        return color;
-    }*/
 
     static myText(x:number, y:number, text:string, size:number, ratio:number, color:number, bold:boolean): eui.Label {
         
@@ -106,26 +98,146 @@ class Util{
         return value;
     }
 
-    static setRect(x : number, y : number, width : number, height : number, color:number, round:number):egret.Shape{
+    static saveStringLocalStrage(key :string, saveValue : string){
+        window.localStorage.setItem(key, saveValue);
+    }
+
+    static loadStringLocalStrage(key : string):string{
+        let stringValue :string =  window.localStorage.getItem(key); // string
+        let value : string = stringValue;
+        return value;
+    }
+
+    static clearLocalStrage(key : string){
+        if(key)
+        window.localStorage.removeItem(key);
+    }
+
+    static saveJSONLocalStrage(key :string, saveObject : any){
+        let jObject : string = JSON.stringify(saveObject);
+        window.localStorage.setItem(key, jObject);
+    }
+
+    static loadJSONLocalStrage(key : string):any{
+        let jObject :string =  window.localStorage.getItem(key); // string
+        if( jObject == null ){
+            SaveData.registrate();
+            jObject = JSON.stringify(SaveData.object);
+            window.localStorage.setItem(key, jObject);
+        }
+        let object : any = JSON.parse(jObject);
+        return object;
+    }
+
+    static setRect(x : number, y : number, width : number, height : number, color:number, round:number, fill:boolean, lineWidth?:number):egret.Shape{
 
         const shape:egret.Shape = new egret.Shape();
         shape.x = x;
         shape.y = y;
-        shape.graphics.beginFill(color);
-        shape.graphics.drawRoundRect(0, 0, width , height, round);
-        shape.graphics.endFill();
+        if(fill){
+            shape.graphics.beginFill(color);
+            shape.graphics.drawRoundRect(0, 0, width , height, round);
+            shape.graphics.endFill();
+
+        }
+        else{
+            shape.graphics.lineStyle(lineWidth,color);
+            shape.graphics.drawRoundRect(0, 0, width , height, round);
+        }
         return shape;
     }
 
-    static setCircle(x : number, y : number, width : number, height : number, color:number, radius:number):egret.Shape{
-
+    static setCircle(x : number, y : number, width : number, color:number, fill : boolean, lineWidth?: number):egret.Shape{
+        let radius :number = width/2;
         const shape:egret.Shape = new egret.Shape();
         shape.x = x;
         shape.y = y;
-        shape.graphics.beginFill(color);
-        shape.graphics.drawCircle(0, 0, radius);
-        shape.graphics.endFill();
+        if(fill){
+            shape.graphics.beginFill(color);
+            shape.graphics.drawCircle(0, 0, radius);
+            shape.graphics.endFill();
+
+        }
+        else{
+            shape.graphics.lineStyle(lineWidth,color);
+            shape.graphics.drawCircle(0, 0, radius);
+        }
         return shape;
     }
 
+    static setLine(x : number, y : number, length : number, degree : number, lineWidth:number, color:number ):egret.Shape{
+
+        const rad :number = (360 - degree) * Math.PI/180;//Egretの角度は時計回りが正
+        const shape:egret.Shape = new egret.Shape();
+        shape.x = x;
+        shape.y = y;
+        shape.graphics.lineStyle(lineWidth, color);
+        shape.graphics.moveTo(0, 0);
+        shape.graphics.lineTo(length*Math.cos(rad), length*Math.sin(rad));
+        return shape;
+    }
+
+
+    static remove(display : egret.DisplayObjectContainer, removeObject : egret.DisplayObject){
+        if(display){
+            display.removeChild(removeObject);
+        }
+        removeObject = null;
+    }
+
+    //-----------------------------
+    //ベクトル系は間違っている可能性あり
+
+    static vector(size : number, degree : number, startPointX?:number, startPointY?:number) : number[]{
+        let rad : number = (360 - degree) * Math.PI/180;//Egretの角度は時計回りが正
+        let v : number[] = [];
+
+        if(startPointX == undefined && startPointY == undefined){
+            v[0] = size * Math.cos(rad);//x
+            v[1] = size * Math.sin(rad);//y
+        }
+        else{
+            v[0] = size * Math.cos(rad) - startPointX;//x
+            v[1] = size * Math.sin(rad) - startPointY;//y
+        }
+        v[2] = size;
+        return v;
+    }
+
+    //外積
+    static cross(v1 : number[], v2 : number[]):number{
+        let cross : number = v1[0]*v2[1] - v1[1]*v2[0];
+        return cross;
+    }
+
+    //内積
+    static dot(v1 : number[], v2 : number[]):number{
+        let dot :number = v1[0] * v2[0] + v1[1]* v2[1];
+        return dot;
+    }
+
+    static cos(v1 : number[], v2 : number[]):number{
+        let v1Size : number = Math.sqrt(v1[0]**2 + v1[1]**2);       
+        let v2Size : number = Math.sqrt(v2[0]**2 + v2[1]**2);
+        if(v1Size < 0){v1Size *= -1;}
+        if(v2Size < 0){v2Size *= -1;}
+        let cos :number = Util.dot(v1,v2)/(v1Size*v2Size);
+        return cos;
+    }
+
+    static sin(v1 : number[], v2 : number[]):number{
+        let v1Size : number = Math.sqrt(v1[0]**2 + v1[1]**2);
+        let v2Size : number = Math.sqrt(v2[0]**2 + v2[1]**2);
+        if(v1Size < 0){v1Size *= -1;}
+        if(v2Size < 0){v2Size *= -1;}
+        let sin : number = Util.cross(v1,v2)/(v1Size*v2Size);
+        return sin;
+    }
+
+    static size(v : number[]):number{
+        let size :number = Math.sqrt(v[0]**2 + v[1]**2);
+        return size;
+    }
+
+    
 }

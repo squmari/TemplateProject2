@@ -8,6 +8,13 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
+var ColorPallet;
+(function (ColorPallet) {
+    ColorPallet[ColorPallet["BULE"] = 4577789] = "BULE";
+    ColorPallet[ColorPallet["WHITE"] = 16053492] = "WHITE";
+    ColorPallet[ColorPallet["RED"] = 15607136] = "RED";
+    ColorPallet[ColorPallet["BLACK"] = 530475] = "BLACK";
+})(ColorPallet || (ColorPallet = {}));
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
@@ -16,6 +23,10 @@ var Main = (function (_super) {
         return _this;
     }
     Main.prototype.addToStage = function () {
+        SaveData.getAccountName();
+        SaveData.load();
+        CheckDate.getDate();
+        CheckDate.save();
         GameObject.init(this.stage);
         Util.init(this);
         Game.init();
@@ -34,10 +45,12 @@ var Game = (function () {
     Game.init = function () {
         this.height = egret.MainContext.instance.stage.stageHeight;
         this.width = egret.MainContext.instance.stage.stageWidth;
+        GameOver.gameOverFlag = false;
         /* new メソッドを記入*/
         new GameStage();
         new UILayer();
         new Background();
+        new Score(0, 0, 0, 0, ColorPallet.BLACK);
     };
     return Game;
 }());
@@ -46,12 +59,9 @@ var Background = (function (_super) {
     __extends(Background, _super);
     function Background() {
         var _this = _super.call(this, 0, 0, Game.width, Game.height) || this;
-        _this.color = Util.color(0, 0, 0);
+        _this.color = ColorPallet.WHITE;
         Background.I = _this;
-        _this.shapes[0] = new egret.Shape();
-        _this.shapes[0].graphics.beginFill(_this.color);
-        _this.shapes[0].graphics.drawRect(0, 0, Game.width, Game.height);
-        _this.shapes[0].graphics.endFill();
+        _this.shapes[0] = Util.setRect(0, 0, Game.width, Game.height, _this.color, 0, true);
         _this.compornent.addChild(_this.shapes[0]);
         return _this;
     }

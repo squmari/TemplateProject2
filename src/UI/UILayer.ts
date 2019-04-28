@@ -15,8 +15,10 @@ class UILayer extends GameObject{
         GameObject.display.addChild(UILayer.display);
     }
 
+
     addDestroyMethod(){
         if(UILayer.display){
+            UILayer.display.removeChildren();
             GameObject.display.removeChild(UILayer.display);
             UILayer.display =null;
         }

@@ -21,7 +21,6 @@ var Button = (function (_super) {
         _this.setCompornentStatus(x, y, width, height);
         return _this;
     }
-    //Button用にオーバーライド
     Button.prototype.setCompornentStatus = function (x, y, width, height) {
         this.compornent.anchorOffsetX += width / 2;
         this.compornent.anchorOffsetY += height / 2;
@@ -30,26 +29,6 @@ var Button = (function (_super) {
         this.compornent.touchEnabled = true;
         this.compornent.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.tap, this);
     };
-    /*    setCompornent(x : number, y : number, width : number, height : number){
-            if(width <= 0){
-                width = 1;
-                console.log("widthが0以下です");
-            }
-            else if(height <= 0){
-                height = 1;
-                console.log("heightが0以下です");
-            }
-            this.compornent = new egret.DisplayObjectContainer();
-            this.compornent.width = width;
-            this.compornent.height = height;
-            this.compornent.anchorOffsetX += width/2;
-            this.compornent.anchorOffsetY += height/2;
-            this.compornent.x = x;
-            this.compornent.y = y;
-            this.compornent.touchEnabled = true;
-            UILayer.display.addChild(this.compornent);
-    
-        }*/
     Button.prototype.setShape = function (x, y, width, height, color) {
         if (this.shapes[0]) {
             GameObject.display.removeChild(this.shapes[0]);

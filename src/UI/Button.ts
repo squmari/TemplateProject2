@@ -12,7 +12,6 @@ abstract class Button extends UICompornent{
         this.setCompornentStatus(x, y, width, height);
     }
 
-    //Button用にオーバーライド
     setCompornentStatus(x : number, y : number, width : number, height : number){
         this.compornent.anchorOffsetX += width/2;
         this.compornent.anchorOffsetY += height/2;
@@ -21,26 +20,6 @@ abstract class Button extends UICompornent{
         this.compornent.touchEnabled = true;
         this.compornent.addEventListener( egret.TouchEvent.TOUCH_BEGIN, this.tap, this );
     }
-/*    setCompornent(x : number, y : number, width : number, height : number){
-        if(width <= 0){
-            width = 1;
-            console.log("widthが0以下です");
-        }
-        else if(height <= 0){
-            height = 1;
-            console.log("heightが0以下です");
-        }
-        this.compornent = new egret.DisplayObjectContainer();
-        this.compornent.width = width;
-        this.compornent.height = height;
-        this.compornent.anchorOffsetX += width/2;
-        this.compornent.anchorOffsetY += height/2;
-        this.compornent.x = x;
-        this.compornent.y = y;
-        this.compornent.touchEnabled = true;
-        UILayer.display.addChild(this.compornent);
-
-    }*/
 
     setShape(x : number, y : number, width : number, height : number, color?:number){
         if( this.shapes[0] ){

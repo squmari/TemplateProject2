@@ -40,12 +40,9 @@ var GameObject = (function () {
             });
             this.shapes = [];
         }
-        if (this.compornent) {
-            GameObject.display.removeChild(this.compornent);
-            this.compornent = null;
-        }
-        /*        const newArray : GameObject[] = GameObject.objects.filter(obj => obj.destroyFlag !== true);
-                GameObject.objects = newArray;*/
+        Util.remove(GameObject.display, this.compornent);
+        var newArray = GameObject.objects.filter(function (obj) { return obj.destroyFlag !== true; });
+        GameObject.objects = newArray;
     };
     GameObject.allDestroy = function () {
         GameObject.objects = GameObject.objects.filter(function (obj) {
@@ -73,21 +70,6 @@ var GameObject = (function () {
     return GameObject;
 }());
 __reflect(GameObject.prototype, "GameObject");
-var PhysicsObject = (function (_super) {
-    __extends(PhysicsObject, _super);
-    function PhysicsObject() {
-        var _this = _super.call(this) || this;
-        _this.body = null;
-        _this.bodyShape = null;
-        return _this;
-    }
-    PhysicsObject.prototype.addDestroyMethod = function () {
-        CreateWorld.world.removeBody(this.body);
-    };
-    PhysicsObject.world = null;
-    return PhysicsObject;
-}(GameObject));
-__reflect(PhysicsObject.prototype, "PhysicsObject");
 //GameStageに描画する用のコンポーネント
 var GameCompornent = (function (_super) {
     __extends(GameCompornent, _super);
@@ -97,18 +79,29 @@ var GameCompornent = (function (_super) {
         return _this;
     }
     GameCompornent.prototype.setCompornent = function (x, y, width, height) {
-        if (width <= 0) {
-            width = 1;
-            console.log("widthが0以下です");
-        }
-        if (height <= 0) {
-            height = 1;
-            console.log("heightが0以下です");
-        }
         this.compornent = new egret.DisplayObjectContainer();
+        this.compornent.x = x;
+        this.compornent.y = y;
         this.compornent.width = width;
         this.compornent.height = height;
         GameStage.display.addChild(this.compornent);
+    };
+    //オーバーライド
+    GameCompornent.prototype.delete = function () {
+        var _this = this;
+        this.addDestroyMethod();
+        if (this.shapes && this.compornent) {
+            this.shapes.forEach(function (s) {
+                _this.compornent.removeChild(s);
+                s = null;
+            });
+            this.shapes = [];
+        }
+        if (this.compornent) {
+            Util.remove(GameStage.display, this.compornent);
+        }
+        var newArray = GameObject.objects.filter(function (obj) { return obj.destroyFlag !== true; });
+        GameObject.objects = newArray;
     };
     return GameCompornent;
 }(GameObject));
@@ -122,18 +115,29 @@ var UICompornent = (function (_super) {
         return _this;
     }
     UICompornent.prototype.setCompornent = function (x, y, width, height) {
-        if (width <= 0) {
-            width = 1;
-            console.log("widthが0以下です");
-        }
-        if (height <= 0) {
-            height = 1;
-            console.log("heightが0以下です");
-        }
         this.compornent = new egret.DisplayObjectContainer();
+        this.compornent.x = x;
+        this.compornent.y = y;
         this.compornent.width = width;
         this.compornent.height = height;
         UILayer.display.addChild(this.compornent);
+    };
+    //オーバーライド
+    UICompornent.prototype.delete = function () {
+        var _this = this;
+        this.addDestroyMethod();
+        if (this.shapes && this.compornent) {
+            this.shapes.forEach(function (s) {
+                _this.compornent.removeChild(s);
+                s = null;
+            });
+            this.shapes = [];
+        }
+        if (this.compornent) {
+            Util.remove(UILayer.display, this.compornent);
+        }
+        var newArray = GameObject.objects.filter(function (obj) { return obj.destroyFlag !== true; });
+        GameObject.objects = newArray;
     };
     UICompornent.compornents = [];
     return UICompornent;

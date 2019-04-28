@@ -23,6 +23,7 @@ var GameStage = (function (_super) {
     };
     GameStage.prototype.addDestroyMethod = function () {
         if (GameStage.display) {
+            GameStage.display.removeChildren();
             GameObject.display.removeChild(GameStage.display);
             GameStage.display = null;
         }

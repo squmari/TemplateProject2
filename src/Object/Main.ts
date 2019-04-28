@@ -1,3 +1,10 @@
+enum ColorPallet{
+    BULE = 0x45d9fd,
+    WHITE = 0xf4f4f4,
+    RED = 0xee2560,
+    BLACK = 0x08182b,
+}
+
 class Main extends eui.UILayer {
 
     public constructor() {
@@ -6,7 +13,10 @@ class Main extends eui.UILayer {
     }
  
     private addToStage() {
-
+        SaveData.getAccountName();
+        SaveData.load();
+        CheckDate.getDate();
+        CheckDate.save();
         GameObject.init( this.stage );
         Util.init(this);
         Game.init();
@@ -30,29 +40,28 @@ class Game{
         this.height = egret.MainContext.instance.stage.stageHeight;
         this.width  = egret.MainContext.instance.stage.stageWidth;
 
+        GameOver.gameOverFlag = false;
+
+
         /* new メソッドを記入*/
         new GameStage();
         new UILayer();
         new Background();
-        new Score(0,0,0,0, Util.color(255,255,255));
-
+        new Score(0,0,0,0, ColorPallet.BLACK);
+        
     }
 
 
 }
 
-
 class Background extends GameCompornent{
 
     static I : Background = null;
-    color :number = Util.color(0,0,0);
+    color :number = ColorPallet.WHITE;
     constructor() {
         super(0,0,Game.width,Game.height);
         Background.I = this;
-        this.shapes[0] = new egret.Shape();
-        this.shapes[0].graphics.beginFill(this.color);
-        this.shapes[0].graphics.drawRect(0, 0, Game.width, Game.height);
-        this.shapes[0].graphics.endFill();
+        this.shapes[0] = Util.setRect(0,0,Game.width, Game.height,this.color,0,true);
         this.compornent.addChild(this.shapes[0]);
     }
     

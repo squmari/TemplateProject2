@@ -8,21 +8,19 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
-var Player = (function (_super) {
-    __extends(Player, _super);
-    function Player() {
+var PhysicsObject = (function (_super) {
+    __extends(PhysicsObject, _super);
+    function PhysicsObject() {
         var _this = _super.call(this) || this;
-        Player.I = _this;
-        _this.loadStatus();
+        _this.body = null;
+        _this.bodyShape = null;
         return _this;
     }
-    Player.prototype.loadStatus = function () {
+    PhysicsObject.prototype.addDestroyMethod = function () {
+        CreateWorld.world.removeBody(this.body);
     };
-    Player.prototype.resetStatus = function () {
-    };
-    Player.prototype.updateContent = function () { };
-    Player.I = null;
-    return Player;
+    PhysicsObject.world = null;
+    return PhysicsObject;
 }(GameObject));
-__reflect(Player.prototype, "Player");
-//# sourceMappingURL=Player.js.map
+__reflect(PhysicsObject.prototype, "PhysicsObject");
+//# sourceMappingURL=PhysicsObject.js.map
