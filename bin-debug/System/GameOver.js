@@ -20,7 +20,7 @@ var GameOver = (function (_super) {
         _this.textGameOver.anchorOffsetX = _this.textGameOver.width / 2;
         _this.textGameOver.anchorOffsetY = _this.textGameOver.height / 2;
         _this.compornent.addChild(_this.textGameOver);
-        _this.textScore = Util.myText(Game.width / 2, Game.height / 2 + 50, "LEVEL : " + Score.score, 80, 1, _this.textColor, true);
+        _this.textScore = Util.myText(Game.width / 2, Game.height / 2 + 50, "SCORE : " + Score.score, 80, 1, _this.textColor, true);
         _this.textScore.anchorOffsetX = _this.textScore.width / 2;
         _this.textScore.anchorOffsetY = _this.textScore.height / 2;
         _this.compornent.addChild(_this.textScore);
@@ -39,7 +39,6 @@ var GameOver = (function (_super) {
     GameOver.prototype.tap = function (e) {
         GameOver.gameOverFlag = false;
         GameObject.transit = Game.init;
-        this.destroy();
     };
     GameOver.gameOverFlag = false;
     return GameOver;

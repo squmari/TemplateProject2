@@ -1,11 +1,13 @@
 //UIコンポーネントを描画するレイヤー
-class UILayer extends GameObject{
+//リトライするときはaddDestroyMethodをGameOverで実行すること
+class UILayer{
 
+    static I :UILayer = null;
     static display: eui.UILayer = null;
     static index :number;
 
     constructor(){
-        super();
+        UILayer.I = this;
         this.setContainer();
         UILayer.index = GameObject.display.getChildIndex(UILayer.display) ;
     }
@@ -24,7 +26,6 @@ class UILayer extends GameObject{
         }
     }
 
-    updateContent(){}
 
 
 }

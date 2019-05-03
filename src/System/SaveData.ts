@@ -57,7 +57,6 @@ class SaveData{
         SaveData.getPlayerID();
         SaveData.getGameID();
         SaveData.load();
-        SaveData.save();
     }
 
 

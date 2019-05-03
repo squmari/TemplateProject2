@@ -24,15 +24,14 @@ class Score extends UICompornent{
         this.compornent.addChild( this.text );
 
         this.textBest = Util.myText(0, 50, "BEST : " + Score.bestScore.toString(), 100, 0.5, this.textColor, true);
+        Score.bestScore = SaveData.object.bestScore;
+        this.textBest.text = "BEST : " + Score.bestScore.toString();
         this.compornent.addChild( this.textBest );
 
     }
 
     saveBestScore(){
-        if( Score.bestScore < Score.score ){
-            Score.bestScore = Score.score;
-            this.textBest.text = "BEST : " + Score.bestScore.toFixed();
-
+        if(Score.bestScore > SaveData.object.bestScore){
             SaveData.object.bestScore = Score.bestScore;
             SaveData.save();
         }
@@ -46,11 +45,16 @@ class Score extends UICompornent{
         }
         this.text = null;
         this.textBest = null;
+        Score.score = 0;
+
     }
 
     updateContent() {
         this.text.text = "SCORE : " + Score.score.toFixed();
-        this.saveBestScore();
+        if( Score.bestScore < Score.score ){
+            Score.bestScore = Score.score;
+            this.textBest.text = "BEST : " + Score.bestScore.toFixed();
+        }
     }
 
     static addScore(){
@@ -58,8 +62,5 @@ class Score extends UICompornent{
         
     }
 
-    test(){
-        Score.score = 100;
-    }
 
 }

@@ -25,12 +25,12 @@ var Score = (function (_super) {
         this.text = Util.myText(0, 0, "SCORE : 0", 100, 0.5, this.textColor, true);
         this.compornent.addChild(this.text);
         this.textBest = Util.myText(0, 50, "BEST : " + Score.bestScore.toString(), 100, 0.5, this.textColor, true);
+        Score.bestScore = SaveData.object.bestScore;
+        this.textBest.text = "BEST : " + Score.bestScore.toString();
         this.compornent.addChild(this.textBest);
     };
     Score.prototype.saveBestScore = function () {
-        if (Score.bestScore < Score.score) {
-            Score.bestScore = Score.score;
-            this.textBest.text = "BEST : " + Score.bestScore.toFixed();
+        if (Score.bestScore > SaveData.object.bestScore) {
             SaveData.object.bestScore = Score.bestScore;
             SaveData.save();
         }
@@ -42,16 +42,17 @@ var Score = (function (_super) {
         }
         this.text = null;
         this.textBest = null;
+        Score.score = 0;
     };
     Score.prototype.updateContent = function () {
         this.text.text = "SCORE : " + Score.score.toFixed();
-        this.saveBestScore();
+        if (Score.bestScore < Score.score) {
+            Score.bestScore = Score.score;
+            this.textBest.text = "BEST : " + Score.bestScore.toFixed();
+        }
     };
     Score.addScore = function () {
         Score.score += 1;
-    };
-    Score.prototype.test = function () {
-        Score.score = 100;
     };
     Score.I = null; // singleton instance
     Score.score = 0;

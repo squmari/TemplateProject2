@@ -14,12 +14,13 @@ class GameOver extends UICompornent{
         this.textGameOver.anchorOffsetY = this.textGameOver.height/2;
         this.compornent.addChild( this.textGameOver );
         
-        this.textScore = Util.myText(Game.width/2, Game.height/2 + 50, "LEVEL : " + Score.score, 80, 1, this.textColor, true);
+        this.textScore = Util.myText(Game.width/2, Game.height/2 + 50, "SCORE : " + Score.score, 80, 1, this.textColor, true);
         this.textScore.anchorOffsetX = this.textScore.width/2;
         this.textScore.anchorOffsetY = this.textScore.height/2;
         this.compornent.addChild( this.textScore );
 
         UILayer.display.once(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => this.tap(e), this);
+        
     }
 
     addDestroyMethod() {
@@ -38,7 +39,6 @@ class GameOver extends UICompornent{
     tap(e:egret.TouchEvent){
         GameOver.gameOverFlag = false;
         GameObject.transit = Game.init;
-        this.destroy();
     }
 
 }

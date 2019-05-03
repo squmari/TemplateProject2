@@ -49,7 +49,6 @@ var SaveData = (function () {
         SaveData.getPlayerID();
         SaveData.getGameID();
         SaveData.load();
-        SaveData.save();
     };
     SaveData.getPlayerID = function () {
         SaveData.playerID = Util.loadStringLocalStrage("playerID");
