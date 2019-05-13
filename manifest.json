@@ -13,17 +13,19 @@
 	],
 	"game": [
 		"bin-debug/Object/GameObject.js",
-		"bin-debug/Object/PhysicsObject.js",
-		"bin-debug/UI/UILayer.js",
-		"bin-debug/Object/Player.js",
-		"bin-debug/System/GameOver.js",
 		"bin-debug/System/GameScene.js",
 		"bin-debug/Object/Main.js",
+		"bin-debug/Object/PhysicsObject.js",
+		"bin-debug/Object/Player.js",
+		"bin-debug/System/Camera.js",
+		"bin-debug/System/GameOver.js",
+		"bin-debug/Object/Background.js",
+		"bin-debug/System/SaveData.js",
 		"bin-debug/System/Util.js",
 		"bin-debug/UI/Button.js",
 		"bin-debug/UI/CheckDate.js",
 		"bin-debug/UI/GameStage.js",
 		"bin-debug/UI/Score.js",
-		"bin-debug/System/SaveData.js"
+		"bin-debug/UI/UILayer.js"
 	]
 }

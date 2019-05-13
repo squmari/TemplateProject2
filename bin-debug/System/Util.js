@@ -122,8 +122,7 @@ var Util = (function () {
         }
         return shape;
     };
-    Util.setCircle = function (x, y, width, color, fill, lineWidth) {
-        var radius = width / 2;
+    Util.setCircle = function (x, y, radius, color, fill, lineWidth) {
         var shape = new egret.Shape();
         shape.x = x;
         shape.y = y;
@@ -138,18 +137,33 @@ var Util = (function () {
         }
         return shape;
     };
+    Util.setEllipse = function (x, y, width, height, color, fill, lineWidth) {
+        var shape = new egret.Shape();
+        shape.x = x;
+        shape.y = y;
+        if (fill) {
+            shape.graphics.beginFill(color);
+            shape.graphics.drawEllipse(0, 0, width, height);
+            shape.graphics.endFill();
+        }
+        else {
+            shape.graphics.lineStyle(lineWidth, color);
+            shape.graphics.drawEllipse(0, 0, width, height);
+        }
+        return shape;
+    };
     Util.setLine = function (x, y, length, degree, lineWidth, color) {
         var rad = (360 - degree) * Math.PI / 180; //Egretの角度は時計回りが正
         var shape = new egret.Shape();
         shape.x = x;
         shape.y = y;
         shape.graphics.lineStyle(lineWidth, color);
-        shape.graphics.moveTo(0, 0);
+        shape.graphics.moveTo(x, y);
         shape.graphics.lineTo(length * Math.cos(rad), length * Math.sin(rad));
         return shape;
     };
     Util.remove = function (display, removeObject) {
-        if (display) {
+        if (display && removeObject) {
             display.removeChild(removeObject);
         }
         removeObject = null;

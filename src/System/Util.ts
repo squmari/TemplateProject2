@@ -147,8 +147,7 @@ class Util{
         return shape;
     }
 
-    static setCircle(x : number, y : number, width : number, color:number, fill : boolean, lineWidth?: number):egret.Shape{
-        let radius :number = width/2;
+    static setCircle(x : number, y : number, radius : number, color:number, fill : boolean, lineWidth?: number):egret.Shape{
         const shape:egret.Shape = new egret.Shape();
         shape.x = x;
         shape.y = y;
@@ -164,6 +163,22 @@ class Util{
         }
         return shape;
     }
+    static setEllipse(x : number, y : number, width : number, height : number, color:number, fill : boolean, lineWidth?: number):egret.Shape{
+        const shape:egret.Shape = new egret.Shape();
+        shape.x = x;
+        shape.y = y;
+        if(fill){
+            shape.graphics.beginFill(color);
+            shape.graphics.drawEllipse(0, 0, width,height);
+            shape.graphics.endFill();
+
+        }
+        else{
+            shape.graphics.lineStyle(lineWidth,color);
+            shape.graphics.drawEllipse(0, 0, width,height);
+        }
+        return shape;
+    }
 
     static setLine(x : number, y : number, length : number, degree : number, lineWidth:number, color:number ):egret.Shape{
 
@@ -172,18 +187,20 @@ class Util{
         shape.x = x;
         shape.y = y;
         shape.graphics.lineStyle(lineWidth, color);
-        shape.graphics.moveTo(0, 0);
+        shape.graphics.moveTo(x, y);
         shape.graphics.lineTo(length*Math.cos(rad), length*Math.sin(rad));
         return shape;
     }
 
 
     static remove(display : egret.DisplayObjectContainer, removeObject : egret.DisplayObject){
-        if(display){
+        
+        if(display && removeObject){
             display.removeChild(removeObject);
         }
         removeObject = null;
     }
+
 
     //-----------------------------
     //ベクトル系は間違っている可能性あり

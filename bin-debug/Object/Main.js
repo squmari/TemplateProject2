@@ -15,6 +15,7 @@ var ColorPallet;
     ColorPallet[ColorPallet["RED"] = 15607136] = "RED";
     ColorPallet[ColorPallet["BLACK"] = 530475] = "BLACK";
 })(ColorPallet || (ColorPallet = {}));
+var PIXEL_PER_METER = 1;
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
@@ -23,10 +24,12 @@ var Main = (function (_super) {
         return _this;
     }
     Main.prototype.addToStage = function () {
+        Util.init(this);
         CheckDate.init();
         SaveData.init();
         GameObject.init(this.stage);
-        Util.init(this);
+        PhysicsObject.prepare(PIXEL_PER_METER);
+        Camera2D.initial();
         Game.init();
         egret.startTick(this.tickLoop, this);
     };
@@ -53,45 +56,4 @@ var Game = (function () {
     return Game;
 }());
 __reflect(Game.prototype, "Game");
-var Background = (function (_super) {
-    __extends(Background, _super);
-    function Background() {
-        var _this = _super.call(this, 0, 0, Game.width, Game.height) || this;
-        _this.color = ColorPallet.WHITE;
-        Background.I = _this;
-        _this.shapes[0] = Util.setRect(0, 0, Game.width, Game.height, _this.color, 0, true);
-        _this.compornent.addChild(_this.shapes[0]);
-        return _this;
-    }
-    Background.prototype.updateContent = function () { };
-    Background.I = null;
-    return Background;
-}(GameCompornent));
-__reflect(Background.prototype, "Background");
-var CreateWorld = (function (_super) {
-    __extends(CreateWorld, _super);
-    function CreateWorld() {
-        var _this = _super.call(this) || this;
-        CreateWorld.I = _this;
-        CreateWorld.world.on("beginContact", _this.collision, _this);
-        return _this;
-    }
-    CreateWorld.prototype.createWorld = function () {
-        CreateWorld.world = new p2.World();
-        CreateWorld.world.sleepMode = p2.World.BODY_SLEEPING;
-        CreateWorld.world.gravity = [0, 9.8];
-    };
-    CreateWorld.worldBegin = function (dt) {
-        CreateWorld.world.step(1 / 60, dt / 1000, 10);
-        return false;
-    };
-    //コリジョンイベントはここにまとめる
-    CreateWorld.prototype.collision = function (evt) {
-    };
-    CreateWorld.prototype.addDestroyMethod = function () { CreateWorld.world.clear(); };
-    CreateWorld.prototype.updateContent = function () { };
-    CreateWorld.I = null;
-    return CreateWorld;
-}(PhysicsObject));
-__reflect(CreateWorld.prototype, "CreateWorld");
 //# sourceMappingURL=Main.js.map

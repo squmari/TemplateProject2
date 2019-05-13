@@ -5,6 +5,8 @@ enum ColorPallet{
     BLACK = 0x08182b,
 }
 
+const PIXEL_PER_METER = 1;
+
 class Main extends eui.UILayer {
 
     public constructor() {
@@ -13,10 +15,12 @@ class Main extends eui.UILayer {
     }
  
     private addToStage() {
+        Util.init( this );
         CheckDate.init();
         SaveData.init();
         GameObject.init( this.stage );
-        Util.init(this);
+        PhysicsObject.prepare( PIXEL_PER_METER );
+        Camera2D.initial();
         Game.init();
         egret.startTick(this.tickLoop, this);
     }
@@ -48,55 +52,6 @@ class Game{
         new Score(0,0,0,0, ColorPallet.BLACK);
         
     }
-
-
-}
-
-class Background extends GameCompornent{
-
-    static I : Background = null;
-    color :number = ColorPallet.WHITE;
-    constructor() {
-        super(0,0,Game.width,Game.height);
-        Background.I = this;
-        this.shapes[0] = Util.setRect(0,0,Game.width, Game.height,this.color,0,true);
-        this.compornent.addChild(this.shapes[0]);
-    }
-    
-    updateContent() {}
-}
-
-class CreateWorld extends PhysicsObject{
-
-    static I : CreateWorld = null;
-
-    constructor() {
-        super();
-        CreateWorld.I = this;
-        CreateWorld.world.on("beginContact",  this.collision, this);
-
-    }
-    createWorld(){
-        CreateWorld.world = new p2.World();
-        CreateWorld.world.sleepMode = p2.World.BODY_SLEEPING;
-        CreateWorld.world.gravity = [0, 9.8];
-
-    }
-
-    static worldBegin(dt : number) :boolean{
-       
-        CreateWorld.world.step(1/60, dt/1000, 10);
-        return false;
-    }
-
-    //コリジョンイベントはここにまとめる
-    private collision(evt : any){
-
-    }
-
-    addDestroyMethod(){CreateWorld.world.clear();}
-
-    updateContent(){}
 
 
 }
